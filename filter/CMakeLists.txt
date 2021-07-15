@@ -10,8 +10,6 @@ endif()
 ########################################################################
 # Filter blocks module
 ########################################################################
-include_directories(${Spuce_INCLUDE_DIRS})
-
 POTHOS_MODULE_UTIL(
     TARGET FilterBlocks
     SOURCES
@@ -25,6 +23,8 @@ POTHOS_MODULE_UTIL(
         TestIIRFilter.cpp
         EnvelopeDetector.cpp
     DESTINATION comms
-    LIBRARIES ${Spuce_LIBRARIES}
+    LIBRARIES
+        spuce
+        CommsFunctions
     ENABLE_DOCS
 )

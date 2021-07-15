@@ -22,20 +22,12 @@ if(NOT MSVC)
     check_symbol_exists(exp10f "math.h" HAVE_EXP10F)
     check_symbol_exists(exp10 "math.h" HAVE_EXP10)
 endif()
+
 configure_file(
     Exp10.hpp.in
     ${CMAKE_CURRENT_BINARY_DIR}/Exp10.hpp)
 
-include_directories(
-    ${CMAKE_CURRENT_SOURCE_DIR}
-    ${CMAKE_CURRENT_BINARY_DIR})
-
-set(libraries CommsFunctions)
-
-if(xsimd_FOUND)
-    add_subdirectory(SIMD)
-    list(APPEND libraries CommsMathSIMD)
-endif()
+include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
 POTHOS_MODULE_UTIL(
     TARGET MathBlocks
@@ -79,7 +71,14 @@ POTHOS_MODULE_UTIL(
         TestExp.cpp
         ModF.cpp
         TestModF.cpp
-    LIBRARIES ${libraries}
+    LIBRARIES
+        CommsFunctions
+        CommsTests
     DESTINATION comms
     ENABLE_DOCS
 )
+
+if(xsimd_FOUND)
+    add_subdirectory(SIMD)
+    target_link_libraries(MathBlocks PRIVATE CommsMathSIMD)
+endif()

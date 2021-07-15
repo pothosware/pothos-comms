@@ -28,16 +28,10 @@ PothosGenerateSIMDSources(
     MathBlocks.json
     ${SIMDInputs})
 
-include_directories(
-    ${CMAKE_CURRENT_BINARY_DIR}
-    ${Pothos_INCLUDE_DIRS})
-
-set(libraries
-    ${Pothos_LIBRARIES}
-    xsimd)
-
 add_library(CommsMathSIMD STATIC ${SIMDSources})
-target_link_libraries(CommsMathSIMD ${libraries})
+target_link_libraries(CommsMathSIMD PRIVATE xsimd)
+target_link_libraries(CommsMathSIMD PRIVATE Pothos)
+target_include_directories(CommsMathSIMD PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
 add_dependencies(CommsMathSIMD MathBlocks_SIMDDispatcher)
 set_property(TARGET CommsMathSIMD PROPERTY POSITION_INDEPENDENT_CODE TRUE)
 

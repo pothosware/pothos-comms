@@ -44,6 +44,7 @@ POTHOS_MODULE_UTIL(
         TestByteOrder.cpp
         Bitwise.cpp
         TestBitwise.cpp
+    LIBRARIES CommsTests
     DESTINATION comms
     ENABLE_DOCS
 )

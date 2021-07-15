@@ -1,7 +1,7 @@
 ########################################################################
 # Project setup
 ########################################################################
-cmake_minimum_required(VERSION 2.8.9)
+cmake_minimum_required(VERSION 3.1.0)
 project(PothosComms CXX C)
 
 if(${CMAKE_PROJECT_NAME} STREQUAL ${PROJECT_NAME})
@@ -56,16 +56,24 @@ if (Spuce_FOUND)
     message(STATUS "Spuce_VERSION: ${Spuce_VERSION}")
     message(STATUS "Spuce_INCLUDE_DIRS: ${Spuce_INCLUDE_DIRS}")
     message(STATUS "Spuce_LIBRARIES: ${Spuce_LIBRARIES}")
+    if (NOT TARGET spuce)
+    add_library(spuce INTERFACE)
+    target_link_libraries(spuce INTERFACE "${Spuce_LIBRARIES}")
+    target_include_directories(spuce INTERFACE "${Spuce_INCLUDE_DIRS}")
+    endif()
 else (Spuce_FOUND)
     message(WARNING "Spuce filter designer library not found...")
 endif (Spuce_FOUND)
 
 ########################################################################
+# Common testing library
+########################################################################
+add_library(CommsTests INTERFACE)
+target_include_directories(CommsTests INTERFACE ${CMAKE_CURRENT_SOURCE_DIR})
+
+########################################################################
 # Build subdirectories
 ########################################################################
-include_directories(functions)
-include_directories(${CMAKE_CURRENT_SOURCE_DIR})
-
 add_subdirectory(functions)
 add_subdirectory(demod)
 add_subdirectory(digital)
